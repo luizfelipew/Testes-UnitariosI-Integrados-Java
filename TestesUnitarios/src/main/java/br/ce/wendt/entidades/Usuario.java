@@ -1,5 +1,8 @@
 package br.ce.wendt.entidades;
 
+import lombok.Data;
+
+@Data
 public class Usuario {
 
 	private String nome;
@@ -17,4 +20,5 @@ public class Usuario {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 }
