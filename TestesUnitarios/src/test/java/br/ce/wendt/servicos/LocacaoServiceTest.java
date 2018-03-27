@@ -3,7 +3,9 @@ package br.ce.wendt.servicos;
 import br.ce.wendt.entidades.Filme;
 import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 
 import java.util.Date;
 
@@ -17,8 +19,11 @@ import static org.junit.Assert.assertThat;
 
 public class LocacaoServiceTest {
 
+    @Rule
+    public ErrorCollector error = new ErrorCollector();
+
 	@Test
-	public void teste() {
+	public void testeLocacao() {
 		//cenario
 		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
@@ -33,9 +38,12 @@ public class LocacaoServiceTest {
 		//Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
 		//Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
 
-		assertThat(locacao.getValor(), is(equalTo(5.0)));
-		assertThat(locacao.getValor(), is(not(5.0)));
+		/*assertThat(locacao.getValor(), is(equalTo(5.0)));
 		assertThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		assertThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+		assertThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(false));*/
+
+        error.checkThat(locacao.getValor(), is(equalTo(6.0)));
+        error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
+        error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(false));
 	}
 }
