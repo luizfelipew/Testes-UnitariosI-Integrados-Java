@@ -7,6 +7,8 @@ import java.util.Date;
 import br.ce.wendt.entidades.Filme;
 import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
+import br.ce.wendt.exceptions.FilmesSemEstoqueException;
+import br.ce.wendt.exceptions.LocadoraException;
 import br.ce.wendt.utils.DataUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,7 +20,15 @@ public class LocacaoService {
 	public Locacao alugarFilme(Usuario usuario, Filme filme) throws Exception {
 
 		if (filme.getEstoque() == 0){
-			throw new Exception("Filme sem estoque");
+			throw new FilmesSemEstoqueException();
+		}
+
+		if(usuario == null){
+			throw new LocadoraException("Usuario vazio");
+		}
+
+		if(filme == null){
+			throw new LocadoraException("Filme vazio");
 		}
 
 		Locacao locacao = new Locacao();

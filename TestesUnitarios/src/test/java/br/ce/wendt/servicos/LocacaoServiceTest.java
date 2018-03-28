@@ -3,6 +3,7 @@ package br.ce.wendt.servicos;
 import br.ce.wendt.entidades.Filme;
 import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
+import br.ce.wendt.exceptions.FilmesSemEstoqueException;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public class LocacaoServiceTest {
 	}
 
 	//Forma elegante de esperar uma exceção no teste
-	@Test(expected = Exception.class)
+	@Test(expected = FilmesSemEstoqueException.class)
 	public void testeLocacao_filmeSemEstoque() throws Exception {
 
 		LocacaoService service = new LocacaoService();
@@ -66,7 +67,7 @@ public class LocacaoServiceTest {
 		service.alugarFilme(usuario, filme);
 	}
 
-	//Forma robusta para ter um maior controle sobre a exceção esperada
+/*	//Forma robusta para ter um maior controle sobre a exceção esperada
 	@Test
 	public void testeLocacao_filmeSemEstoque2() {
 
@@ -97,6 +98,22 @@ public class LocacaoServiceTest {
 		exception.expectMessage("Filme sem estoque");
 		//acao
 		service.alugarFilme(usuario, filme);
+
+	} */
+
+
+
+	//Forma robusta
+	@Test
+	public void testeLocacao_usuarioVazio() {
+		//cenario
+		LocacaoService service = new LocacaoService();
+		Filme filme = new Filme("Filme 2", 0, 4.0);
+
+		//acao
+		try {
+			service.alugarFilme(null, filme);
+		} catch ()
 
 	}
 }
