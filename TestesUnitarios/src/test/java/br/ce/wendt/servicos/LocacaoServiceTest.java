@@ -13,8 +13,7 @@ import static br.ce.wendt.utils.DataUtils.isMesmaData;
 import static br.ce.wendt.utils.DataUtils.obterDataComDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
+
 
 
 public class LocacaoServiceTest {
