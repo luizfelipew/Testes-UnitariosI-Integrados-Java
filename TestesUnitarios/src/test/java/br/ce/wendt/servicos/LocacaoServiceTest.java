@@ -4,6 +4,7 @@ import br.ce.wendt.entidades.Filme;
 import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
 import br.ce.wendt.exceptions.FilmesSemEstoqueException;
+import br.ce.wendt.exceptions.LocadoraException;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,7 +17,6 @@ import static br.ce.wendt.utils.DataUtils.isMesmaData;
 import static br.ce.wendt.utils.DataUtils.obterDataComDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class LocacaoServiceTest {
@@ -103,17 +103,38 @@ public class LocacaoServiceTest {
 
 
 
-	//Forma robusta
+	//Forma robusta sempre tem Assert.fail()
 	@Test
-	public void testeLocacao_usuarioVazio() {
+	public void testeLocacao_usuarioVazio() throws FilmesSemEstoqueException {
 		//cenario
 		LocacaoService service = new LocacaoService();
-		Filme filme = new Filme("Filme 2", 0, 4.0);
+		Filme filme = new Filme("Filme 2", 1, 4.0);
+        Usuario usuario = new Usuario("Usuario 1");
 
 		//acao
 		try {
 			service.alugarFilme(null, filme);
-		} catch ()
+			Assert.fail();
+		} catch (LocadoraException e) {
+			Assert.assertThat(e.getMessage(),is("Usuario vazio"));
+		}
 
+        System.out.println("Forma robusta");
 	}
+
+	//Forma nova
+	@Test
+    public void testeLocacao_FilmeVazio() throws FilmesSemEstoqueException, LocadoraException {
+        //cenario
+        LocacaoService service = new LocacaoService();
+        Usuario usuario = new Usuario("Usuario 1");
+
+        exception.expect(LocadoraException.class);
+        exception.expectMessage("Filme vazio");
+
+        service.alugarFilme(usuario, null);
+
+        System.out.println("Forma nova");
+
+    }
 }
