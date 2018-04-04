@@ -1,41 +1,49 @@
 package br.ce.wendt.servicos;
 
-import static br.ce.wendt.utils.DataUtils.adicionarDias;
-
-import java.util.Date;
-
 import br.ce.wendt.entidades.Filme;
 import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
 import br.ce.wendt.exceptions.FilmesSemEstoqueException;
 import br.ce.wendt.exceptions.LocadoraException;
-import br.ce.wendt.utils.DataUtils;
-import org.junit.Assert;
-import org.junit.Test;
+
+import java.util.Date;
+import java.util.List;
+
+import static br.ce.wendt.utils.DataUtils.adicionarDias;
 
 public class LocacaoService {
 
 
 
-	public Locacao alugarFilme(Usuario usuario, Filme filme) throws FilmesSemEstoqueException, LocadoraException {
+	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmesSemEstoqueException, LocadoraException {
 
 		if(usuario == null){
 			throw new LocadoraException("Usuario vazio");
 		}
 
-		if(filme == null){
+		if(filmes == null || filmes.isEmpty()){
 			throw new LocadoraException("Filme vazio");
 		}
 
-		if (filme.getEstoque() == 0){
-			throw new FilmesSemEstoqueException();
+		for (Filme filme: filmes){
+			if (filme.getEstoque() == 0){
+				throw new FilmesSemEstoqueException();
+			}
 		}
 
+
 		Locacao locacao = new Locacao();
-		locacao.setFilme(filme);
+		locacao.setFilmes(filmes);
 		locacao.setUsuario(usuario);
 		locacao.setDataLocacao(new Date());
-		locacao.setValor(filme.getPrecoLocacao());
+
+		Double valorTotal = 0d;
+
+		for (Filme filme: filmes){
+			valorTotal += filme.getPrecoLocacao();
+		}
+
+		locacao.setValor(valorTotal);
 
 		//Entrega no dia seguinte
 		Date dataEntrega = new Date();

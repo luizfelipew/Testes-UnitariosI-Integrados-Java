@@ -9,7 +9,9 @@ import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static br.ce.wendt.utils.DataUtils.isMesmaData;
 import static br.ce.wendt.utils.DataUtils.obterDataComDiferencaDias;
@@ -21,9 +23,6 @@ public class LocacaoServiceTest {
 
 	private LocacaoService service;
 
-//    private static int contador = 0;
-
-
     @Rule
     public ErrorCollector error = new ErrorCollector();
 
@@ -33,52 +32,25 @@ public class LocacaoServiceTest {
 	@Before
 	public void setup(){
 		service = new LocacaoService();
-//        contador ++;
-//        System.out.println(contador);
     }
 
-//	@After
-//	public void tearDown(){
-//		System.out.println("After");
-//	}
-//
-//
-//    @BeforeClass
-//    public static void setupClass(){
-//        System.out.println("Before Class");
-//    }
-//
-//    @AfterClass
-//    public static void tearDownClass(){
-//        System.out.println("After Class");
-//    }
 
 	@Test
 	public void testeLocacao() throws Exception {
 		//cenario
 
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 2, 5.0);
+		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
 
 
 		//acao
-		Locacao locacao = service.alugarFilme(usuario, filme);
+		Locacao locacao = service.alugarFilme(usuario, filmes);
 
 		//verificação
 		error.checkThat(locacao.getValor(), is(equalTo(5.0)));
 		error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
 		error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
 
-
-
-		//verificacao
-		//Assert.assertEquals( 5.0, locacao.getValor(), 0.01);
-		//Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-		//Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
-
-		/*assertThat(locacao.getValor(), is(equalTo(5.0)));
-		assertThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		assertThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(false));*/
 
 	}
 
@@ -87,10 +59,10 @@ public class LocacaoServiceTest {
 	public void testeLocacao_filmeSemEstoque() throws Exception {
 
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 0, 5.0);
+        List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 0, 5.0));
 
 		//acao
-		service.alugarFilme(usuario, filme);
+		service.alugarFilme(usuario, filmes);
 	}
 
 /*	//Forma robusta para ter um maior controle sobre a exceção esperada
@@ -133,12 +105,12 @@ public class LocacaoServiceTest {
 	@Test
 	public void testeLocacao_usuarioVazio() throws FilmesSemEstoqueException {
 		//cenario
-		Filme filme = new Filme("Filme 2", 1, 4.0);
+        List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
         Usuario usuario = new Usuario("Usuario 1");
 
 		//acao
 		try {
-			service.alugarFilme(null, filme);
+			service.alugarFilme(null, filmes);
 			Assert.fail();
 		} catch (LocadoraException e) {
 			Assert.assertThat(e.getMessage(),is("Usuario vazio"));
