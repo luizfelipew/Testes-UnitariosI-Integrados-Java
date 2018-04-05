@@ -5,11 +5,13 @@ import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
 import br.ce.wendt.exceptions.FilmesSemEstoqueException;
 import br.ce.wendt.exceptions.LocadoraException;
+import br.ce.wendt.utils.DataUtils;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import static br.ce.wendt.utils.DataUtils.obterDataComDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 public class LocacaoServiceTest {
@@ -197,4 +200,19 @@ public class LocacaoServiceTest {
         //verificacao
         assertThat(resultado.getValor(), is(14.00));
     }
+
+    /*@Test
+    public void deveDevolverNaSegundaAoAlugarNoSabado() throws FilmesSemEstoqueException, LocadoraException {
+	    //cenario
+	    Usuario usuario = new Usuario("Usuario 1");
+	    List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 1, 5.0));
+
+	    //acao
+        Locacao retorno = service.alugarFilme(usuario, filmes);
+
+        //verificacao
+        boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
+        assertTrue(ehSegunda);
+
+    }*/
 }
