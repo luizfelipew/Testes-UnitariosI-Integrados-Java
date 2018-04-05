@@ -41,8 +41,9 @@ public class LocacaoServiceTest {
 
 	@Test
 	public void deveAlugarFilme() throws Exception {
-		//cenario
+        Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 
+	    //cenario
 		Usuario usuario = new Usuario("Usuario 1");
 		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
 
@@ -201,8 +202,10 @@ public class LocacaoServiceTest {
         assertThat(resultado.getValor(), is(14.00));
     }
 
-    /*@Test
+    @Test
     public void deveDevolverNaSegundaAoAlugarNoSabado() throws FilmesSemEstoqueException, LocadoraException {
+	    Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+
 	    //cenario
 	    Usuario usuario = new Usuario("Usuario 1");
 	    List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 1, 5.0));
@@ -214,5 +217,5 @@ public class LocacaoServiceTest {
         boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
         assertTrue(ehSegunda);
 
-    }*/
+    }
 }
