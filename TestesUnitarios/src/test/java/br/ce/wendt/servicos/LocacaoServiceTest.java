@@ -15,12 +15,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static br.ce.wendt.matchers.MatchersProprios.caiEm;
+import static br.ce.wendt.matchers.MatchersProprios.caiNumaSegunda;
 import static br.ce.wendt.utils.DataUtils.isMesmaData;
 import static br.ce.wendt.utils.DataUtils.obterDataComDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 
 public class LocacaoServiceTest {
@@ -151,8 +152,9 @@ public class LocacaoServiceTest {
         Locacao retorno = service.alugarFilme(usuario, filmes);
 
         //verificacao
-        boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
-        assertTrue(ehSegunda);
+        //boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
+        //assertTrue(ehSegunda);
+        assertThat(retorno.getDataRetorno(), caiNumaSegunda());
 
     }
 }
