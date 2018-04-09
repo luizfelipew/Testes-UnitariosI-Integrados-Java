@@ -8,6 +8,7 @@ import br.ce.wendt.entidades.Usuario;
 import br.ce.wendt.exceptions.FilmesSemEstoqueException;
 import br.ce.wendt.exceptions.LocadoraException;
 import br.ce.wendt.utils.DataUtils;
+import buildermaster.BuilderMaster;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
@@ -161,4 +162,8 @@ public class LocacaoServiceTest {
         assertThat(retorno.getDataRetorno(), caiNumaSegunda());
 
     }
+
+	public static void main(String[] args) {
+		new BuilderMaster().gerarCodigoClasse(Locacao.class);
+	}
 }
