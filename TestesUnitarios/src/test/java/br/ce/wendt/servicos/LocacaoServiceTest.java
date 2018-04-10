@@ -2,6 +2,8 @@ package br.ce.wendt.servicos;
 
 import br.ce.wendt.builders.FilmeBuilder;
 import br.ce.wendt.builders.UsuarioBuilder;
+import br.ce.wendt.daos.LocacaoDAO;
+import br.ce.wendt.daos.LocacaoDAOFake;
 import br.ce.wendt.entidades.Filme;
 import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
@@ -40,6 +42,8 @@ public class LocacaoServiceTest {
 	@Before
 	public void setup(){
 		service = new LocacaoService();
+		LocacaoDAO dao = new LocacaoDAOFake();
+		service.setLocacaoDAO(dao);
     }
 
 

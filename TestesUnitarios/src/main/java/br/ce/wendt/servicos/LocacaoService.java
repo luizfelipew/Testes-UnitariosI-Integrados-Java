@@ -75,4 +75,9 @@ public class LocacaoService {
 		return locacao;
 	}
 
+	// para afzer injeção de dependencia
+	public void setLocacaoDAO(LocacaoDAO dao){
+	    this.dao = dao;
+    }
+
 }
