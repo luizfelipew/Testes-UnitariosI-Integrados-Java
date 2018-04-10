@@ -1,5 +1,6 @@
 package br.ce.wendt.servicos;
 
+import br.ce.wendt.daos.LocacaoDAO;
 import br.ce.wendt.entidades.Filme;
 import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
@@ -16,6 +17,7 @@ import static br.ce.wendt.utils.DataUtils.adicionarDias;
 public class LocacaoService {
 
 
+	private LocacaoDAO dao;
 
 	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmesSemEstoqueException, LocadoraException {
 
@@ -68,6 +70,7 @@ public class LocacaoService {
 		
 		//Salvando a locacao...	
 		//TODO adicionar método para salvar
+        dao.salvar(locacao);
 		
 		return locacao;
 	}
