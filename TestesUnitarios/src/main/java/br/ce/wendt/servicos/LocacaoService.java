@@ -18,6 +18,7 @@ public class LocacaoService {
 
 
 	private LocacaoDAO dao;
+	private SPCService spcService;
 
 	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmesSemEstoqueException, LocadoraException {
 
@@ -33,6 +34,10 @@ public class LocacaoService {
 			if (filme.getEstoque() == 0){
 				throw new FilmesSemEstoqueException();
 			}
+		}
+
+		if (spcService.possuiNegativacao(usuario)){
+			throw new LocadoraException("Usuario Negativado");
 		}
 
 
@@ -79,5 +84,10 @@ public class LocacaoService {
 	public void setLocacaoDAO(LocacaoDAO dao){
 	    this.dao = dao;
     }
+
+	// para afzer injeção de dependencia
+    public void setSPCService(SPCService spc){
+		spcService = spc;
+	}
 
 }

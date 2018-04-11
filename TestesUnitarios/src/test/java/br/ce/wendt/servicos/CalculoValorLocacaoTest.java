@@ -1,7 +1,6 @@
 package br.ce.wendt.servicos;
 
 import br.ce.wendt.daos.LocacaoDAO;
-import br.ce.wendt.daos.LocacaoDAOFake;
 import br.ce.wendt.entidades.Filme;
 import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
@@ -22,7 +21,7 @@ import static br.ce.wendt.builders.FilmeBuilder.umFilme;
 import static br.ce.wendt.builders.UsuarioBuilder.umUsuario;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.runners.Parameterized.*;
+import static org.junit.runners.Parameterized.Parameters;
 
 
 
@@ -46,6 +45,8 @@ public class CalculoValorLocacaoTest {
         service = new LocacaoService();
         LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
         service.setLocacaoDAO(dao);
+        SPCService spc = Mockito.mock(SPCService.class);
+        service.setSPCService(spc);
     }
 
 

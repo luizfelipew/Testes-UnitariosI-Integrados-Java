@@ -1,16 +1,12 @@
 package br.ce.wendt.servicos;
 
-import br.ce.wendt.builders.FilmeBuilder;
-import br.ce.wendt.builders.UsuarioBuilder;
 import br.ce.wendt.daos.LocacaoDAO;
-import br.ce.wendt.daos.LocacaoDAOFake;
 import br.ce.wendt.entidades.Filme;
 import br.ce.wendt.entidades.Locacao;
 import br.ce.wendt.entidades.Usuario;
 import br.ce.wendt.exceptions.FilmesSemEstoqueException;
 import br.ce.wendt.exceptions.LocadoraException;
 import br.ce.wendt.utils.DataUtils;
-import buildermaster.BuilderMaster;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
@@ -28,11 +24,15 @@ import static br.ce.wendt.matchers.MatchersProprios.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 
 public class LocacaoServiceTest {
 
 	private LocacaoService service;
+	private SPCService spc;
+	private LocacaoDAO dao;
+
 
     @Rule
     public ErrorCollector error = new ErrorCollector();
@@ -43,8 +43,10 @@ public class LocacaoServiceTest {
 	@Before
 	public void setup(){
 		service = new LocacaoService();
-		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
+		dao = Mockito.mock(LocacaoDAO.class);
 		service.setLocacaoDAO(dao);
+		spc = Mockito.mock(SPCService.class);
+		service.setSPCService(spc);
     }
 
 
@@ -168,7 +170,26 @@ public class LocacaoServiceTest {
 
     }
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		new BuilderMaster().gerarCodigoClasse(Locacao.class);
-	}
+	}*/
+
+	@Test
+    public void naoDeveAlugarFilmeParaNegativadoSPC() throws FilmesSemEstoqueException, LocadoraException {
+	    //cenario
+        Usuario usuario = umUsuario().agora();
+        Usuario usuario2 = umUsuario().comNome("Usuario 2").agora();
+        List<Filme> filmes = Arrays.asList(umFilme().agora());
+
+        when(spc.possuiNegativacao(usuario)).thenReturn(true);
+
+
+
+        exception.expect(LocadoraException.class);
+        exception.expectMessage("Usuario Negativado");
+
+        //acao
+        service.alugarFilme(usuario, filmes);
+
+    }
 }
