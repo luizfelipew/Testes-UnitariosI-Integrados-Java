@@ -1,8 +1,10 @@
 package br.ce.wendt.entidades;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class Usuario {
 
 	private String nome;
