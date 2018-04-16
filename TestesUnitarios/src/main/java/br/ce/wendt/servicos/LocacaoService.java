@@ -90,7 +90,7 @@ public class LocacaoService {
         }
     }
 
-    // para afzer injeção de dependencia
+   /* // para afzer injeção de dependencia
 	public void setLocacaoDAO(LocacaoDAO dao){
 	    this.dao = dao;
     }
@@ -103,5 +103,5 @@ public class LocacaoService {
 
 	public  void setEmailService(EmailService email){
         emailService = email;
-    }
+    }*/
 }

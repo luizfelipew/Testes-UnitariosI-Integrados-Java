@@ -10,7 +10,10 @@ import br.ce.wendt.utils.DataUtils;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -22,8 +25,6 @@ import static br.ce.wendt.builders.FilmeBuilder.umFilmeSemEstoque;
 import static br.ce.wendt.builders.LocacaoBuilder.umLocacao;
 import static br.ce.wendt.builders.UsuarioBuilder.umUsuario;
 import static br.ce.wendt.matchers.MatchersProprios.*;
-import static br.ce.wendt.utils.DataUtils.obterDataComDiferencaDias;
-import static br.ce.wendt.utils.DataUtils.verificarDiaSemana;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -32,9 +33,15 @@ import static org.mockito.Mockito.*;
 
 public class LocacaoServiceTest {
 
+
+    @InjectMocks
 	private LocacaoService service;
+
+	@Mock
 	private SPCService spc;
+	@Mock
 	private LocacaoDAO dao;
+	@Mock
 	private EmailService email;
 
 
@@ -46,14 +53,14 @@ public class LocacaoServiceTest {
 
 	@Before
 	public void setup(){
-		service = new LocacaoService();
+	    MockitoAnnotations.initMocks(this);
+		/*service = new LocacaoService();
 		dao = mock(LocacaoDAO.class);
 		service.setLocacaoDAO(dao);
 		spc = mock(SPCService.class);
 		service.setSPCService(spc);
 		email = mock(EmailService.class);
-		service.setEmailService(email);
-
+		service.setEmailService(email);*/
     }
 
 
