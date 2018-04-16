@@ -23,11 +23,11 @@ import static br.ce.wendt.builders.LocacaoBuilder.umLocacao;
 import static br.ce.wendt.builders.UsuarioBuilder.umUsuario;
 import static br.ce.wendt.matchers.MatchersProprios.*;
 import static br.ce.wendt.utils.DataUtils.obterDataComDiferencaDias;
+import static br.ce.wendt.utils.DataUtils.verificarDiaSemana;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class LocacaoServiceTest {
@@ -47,11 +47,11 @@ public class LocacaoServiceTest {
 	@Before
 	public void setup(){
 		service = new LocacaoService();
-		dao = Mockito.mock(LocacaoDAO.class);
+		dao = mock(LocacaoDAO.class);
 		service.setLocacaoDAO(dao);
-		spc = Mockito.mock(SPCService.class);
+		spc = mock(SPCService.class);
 		service.setSPCService(spc);
-		email = Mockito.mock(EmailService.class);
+		email = mock(EmailService.class);
 		service.setEmailService(email);
 
     }
@@ -187,7 +187,7 @@ public class LocacaoServiceTest {
         Usuario usuario = umUsuario().agora();
         List<Filme> filmes = Arrays.asList(umFilme().agora());
 
-        when(spc.possuiNegativacao(usuario)).thenReturn(true);
+        when(spc.possuiNegativacao(Mockito.any(Usuario.class))).thenReturn(true);
 
 
         //acao
@@ -206,12 +206,14 @@ public class LocacaoServiceTest {
     public void deveEnviarEmailParaLocacoesAtrasadas(){
 	    //cenario
         Usuario usuario = umUsuario().agora();
-        Usuario usuario2 = umUsuario().agora();
+        Usuario usuario2 = umUsuario().comNome("Usuario em dia").agora();
+        Usuario usuario3 = umUsuario().comNome("Outro atrasado").agora();
+
         List <Locacao> locacoes = Arrays.asList(
-                umLocacao()
-                        .comUsuario(usuario)
-                        .comDataLocacao(obterDataComDiferencaDias(-2))
-                        .agora());
+                umLocacao().comUsuario(usuario).atrasado().agora(),
+				umLocacao().comUsuario(usuario2).agora(),
+                umLocacao().comUsuario(usuario3).atrasado().agora(),
+                umLocacao().comUsuario(usuario3).atrasado().agora());
 
         when(dao.obterLocacoesPendentes()).thenReturn(locacoes);
 
@@ -219,6 +221,10 @@ public class LocacaoServiceTest {
         service.notificarAtrasos();
 
         //verificacao
+        verify(email, times(3)).notificarAtraso(any(Usuario.class));
         verify(email).notificarAtraso(usuario);
+        verify(email, atLeastOnce()).notificarAtraso(usuario3);
+        verify(email, never()).notificarAtraso(usuario2);
+        verifyNoMoreInteractions(email);
     }
 }

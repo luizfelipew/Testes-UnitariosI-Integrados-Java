@@ -11,6 +11,7 @@ import br.ce.wendt.utils.DataUtils;
 
 import static br.ce.wendt.builders.FilmeBuilder.umFilme;
 import static br.ce.wendt.builders.UsuarioBuilder.umUsuario;
+import static br.ce.wendt.utils.DataUtils.obterDataComDiferencaDias;
 
 
 public class LocacaoBuilder {
@@ -31,7 +32,7 @@ public class LocacaoBuilder {
         elemento.setUsuario(umUsuario().agora());
         elemento.setFilmes(Arrays.asList(umFilme().agora()));
         elemento.setDataLocacao(new Date());
-        elemento.setDataRetorno(DataUtils.obterDataComDiferencaDias(1));
+        elemento.setDataRetorno(obterDataComDiferencaDias(1));
         elemento.setValor(4.0);
     }
 
@@ -52,6 +53,12 @@ public class LocacaoBuilder {
 
     public LocacaoBuilder comDataRetorno(Date param) {
         elemento.setDataRetorno(param);
+        return this;
+    }
+
+    public LocacaoBuilder atrasado(){
+        elemento.setDataLocacao(obterDataComDiferencaDias(-4));
+        elemento.setDataRetorno(obterDataComDiferencaDias(-2));
         return this;
     }
 
