@@ -26,35 +26,35 @@ public class LeilaoTest {
 
     }
 
-    @Test(expected = RuntimeException.class)
-    public void naoDeveDarLanceQuandoValorForNegativo(){
-
-        Lance lance = new Lance("jao", -1.99);
-        Leilao kindle = new Leilao("Kindle Paperwhite");
-        kindle.darLance(lance);
-
-//        try {
-//            kindle.darLance(lance);
-////            fail("Cade a excecao");
-//        } catch (RuntimeException e){
-//            assertEquals("Lance com valor negativo", e.getMessage());
-//        }
-    }
-
-
-//    @Test
+//    @Test(expected = RuntimeException.class)
 //    public void naoDeveDarLanceQuandoValorForNegativo(){
 //
-//        thrown.expect(RuntimeException.class);
-//        thrown.expectMessage("Lance com valor negativo");
-//
-//        Lance lance = new Lance("Jao", -1);
-//
+//        Lance lance = new Lance("jao", -1.99);
 //        Leilao kindle = new Leilao("Kindle Paperwhite");
 //        kindle.darLance(lance);
 //
-//
-//
+////        try {
+////            kindle.darLance(lance);
+//////            fail("Cade a excecao");
+////        } catch (RuntimeException e){
+////            assertEquals("Lance com valor negativo", e.getMessage());
+////        }
 //    }
+
+
+    @Test
+    public void naoDeveDarLanceQuandoValorForNegativo(){
+
+        thrown.expect(RuntimeException.class);
+        thrown.expectMessage("Lance com valor negativo");
+
+        Lance lance = new Lance("Jao", -1);
+
+        Leilao kindle = new Leilao("Kindle Paperwhite");
+        kindle.darLance(lance);
+
+
+
+    }
 
 }
