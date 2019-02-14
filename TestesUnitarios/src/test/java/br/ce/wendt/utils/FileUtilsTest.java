@@ -1,11 +1,16 @@
 package br.ce.wendt.utils;
 
+import br.ce.wendt.Scheduled.DeleteArchive;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import sun.jvm.hotspot.tools.FinalizerInfo;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -14,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 public class FileUtilsTest {
 
     private File diretorio;
+    private DeleteArchive deleteArchive;
 
     @Before
     public void prepara(){
@@ -31,6 +37,67 @@ public class FileUtilsTest {
             f.delete();
         }
         diretorio.delete(); // deleta diretorio
+    }
+
+
+    @Test
+    public void deletaArquivoPorUmDia() throws IOException {
+        //cenario
+//        final File diretorio = new File("/Users/LuizFelipe/Documents/Java_udemy/testes/imagensTeste");
+        final String tmpdir = System.getProperty("java.io.tmpdir");
+        diretorio = new File(tmpdir, "test-data");
+        diretorio.mkdirs();
+//
+//        final File origem = new File(diretorio, "lftest.png");
+//        origem.createNewFile();
+
+        new File(diretorio, "arquivo-1.png").createNewFile();
+        new File(diretorio, "arquivo-2.png").createNewFile();
+
+        List<File> arquivos = FileUtils.lista(diretorio);
+
+//        File file = new File("arquivo-1.png");
+        File file = new File("test-data");
+
+        System.out.println(file.lastModified());
+
+        deletarArquivos(1, diretorio.getPath());
+
+//        DataUtils qtd = new DataUtils();
+//        if (arquivos.get(0).lastModified() > qtd.){
+//
+//        }
+
+
+       // System.out.println(arquivos.get(0).lastModified());
+
+
+        // acao
+       // this.deleteArchive.deletarArquivos(0,tmpdir);
+
+        // validao
+//        assertEquals();
+
+
+    }
+
+    public static void deletarArquivos(int qtdDias, String path) {
+        Date data = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        c.add(Calendar.DATE, -qtdDias);
+        data = c.getTime();
+
+
+        File arquivos = new File(path);
+        String[] nomes = arquivos.list();
+        for (String nome : nomes) {
+            File temp = new File(arquivos.getPath(), nome);
+            Date arquivo = new Date(temp.lastModified());
+            if (arquivo.before(data)) {
+                temp.delete();
+            }
+        }
     }
 
     @Test
@@ -67,4 +134,7 @@ public class FileUtilsTest {
         assertTrue("destino criado", destino.exists());
         assertEquals("mesmo tamanho", origem.length(), destino.length());
     }
+
+
+
 }
