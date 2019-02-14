@@ -4,11 +4,9 @@ import br.ce.wendt.Scheduled.DeleteArchive;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import sun.jvm.hotspot.tools.FinalizerInfo;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -59,7 +57,7 @@ public class FileUtilsTest {
 //        File file = new File("arquivo-1.png");
         File file = new File("test-data");
 
-        System.out.println(file.lastModified());
+        System.out.println(new Date(file.lastModified()));
 
         deletarArquivos(1, diretorio.getPath());
 
