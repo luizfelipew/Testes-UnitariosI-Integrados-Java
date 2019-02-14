@@ -79,20 +79,20 @@ public class FileUtilsTest {
 
     }
 
-    public static void deletarArquivos(int qtdDias, String path) {
+    public static void deletarArquivos(int qtdDays, String path) {
         Date data = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(data);
-        c.add(Calendar.DATE, -qtdDias);
+        c.add(Calendar.DATE, -qtdDays);
         data = c.getTime();
 
 
-        File arquivos = new File(path);
-        String[] nomes = arquivos.list();
-        for (String nome : nomes) {
-            File temp = new File(arquivos.getPath(), nome);
-            Date arquivo = new Date(temp.lastModified());
-            if (arquivo.before(data)) {
+        File archives = new File(path);
+        String[] names = archives.list();
+        for (String name : names) {
+            File temp = new File(archives.getPath(), name);
+            Date archive = new Date(temp.lastModified());
+            if (archive.before(data)) {
                 temp.delete();
             }
         }
