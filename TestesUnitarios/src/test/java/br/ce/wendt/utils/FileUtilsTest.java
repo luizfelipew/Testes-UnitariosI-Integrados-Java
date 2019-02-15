@@ -3,7 +3,9 @@ package br.ce.wendt.utils;
 import br.ce.wendt.Scheduled.DeleteArchive;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +20,10 @@ public class FileUtilsTest {
 
     private File diretorio;
     private DeleteArchive deleteArchive;
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
 
     @Before
     public void prepara(){
@@ -96,6 +102,28 @@ public class FileUtilsTest {
                 temp.delete();
             }
         }
+
+
+//           final File destination = new File(System.getProperty("java.io.tmpdir"));
+//
+//        final String command = String.format("touch -t 021404kk11 teste.txt %s ", destination.getAbsolutePath());
+
+//           final File destination = new File(System.getProperty("java.io.tmpdir"));
+//
+//        final String command = String.format("touch -t 021404kk11 teste.txt %s ", destination.getAbsolutePath());
+//
+//        try {
+//            final Process process = Runtime.getRuntime().exec(command);
+//            process.waitFor();
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        this.cleanTempFilesService.cleanTmpFiles();
+//
+//        final File expected = new File(System.getProperty("java.io.tmpdir"));
+//        Assert.assertEquals(expected, destination);
     }
 
     @Test
@@ -133,6 +161,41 @@ public class FileUtilsTest {
         assertEquals("mesmo tamanho", origem.length(), destino.length());
     }
 
+
+    protected void removeArchives(final int numDays, final String path) {
+        final File files = new File(path);
+        final String[] names = files.list();
+        for (final String name : names) {
+            final File temp = new File(files.getPath(), name);
+            final Date archive = new Date(temp.lastModified());
+            if (shouldDelete(archive, numDays)) {
+                try {
+                    temp.delete();
+                } catch (final SecurityException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
+    protected boolean shouldDelete(final Date date, final int numDays) {
+        final Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DATE, -numDays);
+
+        return date.before(c.getTime());
+    }
+
+    @Test
+    public void shouldLauchExceptionWhenDoNotPermitted(){
+        File destination = new File(System.getProperty("java.io.tmpdir"));
+        destination.setExecutable(false);
+
+        exception.expect(SecurityException.class);
+        exception.expectMessage("Usuário sem permissão");
+
+        //this.cleanTempFilesService.removeArchives(1, destination.toString());
+    }
 
 
 }
